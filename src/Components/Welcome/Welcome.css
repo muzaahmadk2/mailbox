@@ -1,0 +1,12 @@
+.welcome {
+  display: flex;
+  justify-content: space-between;
+    font-size: 20px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin-left: 10px;
+    margin-right: 10px;
+    /* margin-top: 1px; */
+    padding: 20px;
+    
+  }
+  

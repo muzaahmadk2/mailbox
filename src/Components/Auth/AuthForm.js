@@ -2,12 +2,17 @@ import React, { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import { useRef } from "react";
 import classes from './AuthForm.module.css';
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { authAction } from "../Store/authSlice";
 
 function AuthForm() {
   const emailRef = useRef("");
   const passwordRef = useRef("");
   const confirmPasswordRef = useRef("");
   const [login, setLogin] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const switchLogin = () => {
     setLogin((prev) => {
@@ -15,49 +20,68 @@ function AuthForm() {
     });
   };
 
-  const loginHandler = async (e) => {
-    e.preventDefault();
-
-    const email = emailRef.current.value;
-    const password = passwordRef.current.value;
-
-    if (!login && password !== confirmPasswordRef.current.value) {
-      alert("password not matching");
-      return;
-    }
-    try {
-      const res = await fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCWmOoJbHcAnhEvB304NyRu0StxPKou3YM ",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            email,
-            password,
-            returnSecureToken: true,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (res.ok) {
-        const data = await res.json();
-        console.log(data);
-        console.log("signedUP");
+  const loginHandler = (event) => {
+    event.preventDefault();
+    const enteredEmail = emailRef.current.value;
+    const enteredPass = passwordRef.current.value;
+    if (enteredPass.length < 6) {
+      return alert("Password must contain 6 digits");
+    } else if (!login && enteredPass !== confirmPasswordRef.current.value) {
+      return alert("Password doesn't match");
+    } else {
+      let url;
+      if (login) {
+        url =
+          "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCWmOoJbHcAnhEvB304NyRu0StxPKou3YM";
       } else {
-        console.log("failed");
-        const data = await res.json();
-        let errorMessage = "Authentication failed!";
-        if (data && data.error && data.error.message) {
-          errorMessage = data.error.message;
-        }
-        throw new Error(errorMessage);
+        url =
+          "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCWmOoJbHcAnhEvB304NyRu0StxPKou3YM";
       }
-    } catch (error) {
-      alert(error);
+      fetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+          email: enteredEmail,
+          password: enteredPass,
+          returnSecureToken: true,
+        }),
+        header: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => {
+          if (res.ok) {
+            console.log("user signed up");
+            return res.json();
+          } else {
+            return res.json().then((data) => {
+              let errorMessage = data.error.message;
+              throw new Error(errorMessage);
+            });
+          }
+        })
+        .then((data) => {
+            dispatch(authAction.login({token: data.idToken, email: enteredEmail}))
+          emailRef.current.value = "";
+          passwordRef.current.value = "";
+          if (!login) {
+            confirmPasswordRef.current.value = "";
+          }
+        })
+        .catch((err) => {
+          alert(err.message);
+        });
     }
   };
+  const forgotPasswordHandler = () => {
+    navigate('/forgotpass');
+  }
   return (
+    <div>
+    <img
+      src={require("./blue.jpg")}
+      alt="img"
+      className={classes.backgroundDiv}
+    />
     <div className={`m-md-5 text-center ${classes.authbox}`}>
       <Container className={` ${classes.container}`}>
         <h3 className={classes.login}>{!login ? "Sign Up" : "Login"}</h3>
@@ -67,6 +91,10 @@ function AuthForm() {
               type="email"
               placeholder="Enter email"
               ref={emailRef}
+              style={{
+                backgroundColor: !login ? "" : "black",
+                color: !login ? "" : "white",
+              }}
             />
           </Form.Group>
           <Form.Group className="mb-3">
@@ -74,6 +102,10 @@ function AuthForm() {
               type="password"
               placeholder="Enter Password"
               ref={passwordRef}
+              style={{
+                backgroundColor: !login ? "" : "black",
+                color: !login ? "" : "white",
+              }}
             />
           </Form.Group>
           {!login && (
@@ -90,11 +122,16 @@ function AuthForm() {
             variant="primary"
             type="submit"
             onClick={loginHandler}
-            className={`m-2 ${classes.sign}`}
+            className={classes.sign}
           >
             {!login ? "SignUp" : "Login"}
           </Button>
           {"  "}
+          {login && <div className={classes.forgotPass}>
+              <Button variant="link" onClick={forgotPasswordHandler}>
+                Forgot password?
+              </Button>
+            </div>}
         </Form>
       </Container>
       <section type='button' onClick={switchLogin} className={classes.section}>
@@ -102,6 +139,7 @@ function AuthForm() {
             {!login ? "Have an account ? Login" : " New user ? SignUp"}
     
       </section>
+    </div>
     </div>
   );
 }

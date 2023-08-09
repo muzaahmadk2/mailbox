@@ -1,9 +1,13 @@
 import { Fragment } from "react";
-import { Navbar,Container, Nav } from "react-bootstrap";
+import { Navbar, Nav } from "react-bootstrap";
 import classes from './Navbar.module.css';
+import { Route, Routes,  } from "react-router-dom";
+import Welcome from "../Welcome/Welcome";
+import { useSelector } from "react-redux";
 
 
 const NavBar = () =>{
+    const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
 return(
     <Fragment>
         <Navbar bg='light' variant="light" className={classes.navbar}>
@@ -24,6 +28,10 @@ return(
             </Nav>
         </div>
         </Navbar>
+        <Routes>
+            {isLoggedIn && <Route path="/" element={<Welcome />} />}
+            {isLoggedIn && <Route path="/home" element={<Welcome/>} />}
+        </Routes>
     </Fragment>
 )
 }
