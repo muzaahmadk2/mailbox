@@ -1,0 +1,38 @@
+.login{
+    color: black;
+    font-size: x-large;
+    margin-bottom: 0.5rem;
+}
+.authbox{
+    position: absolute;
+    top: 15%;
+    right: 40%;
+    min-width: 280px;
+}
+.container{
+    height: auto;
+    width: 18rem;
+    margin: auto;
+    margin-top: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background-color: rgb(248, 248, 248);
+    flex-direction: column;
+    /* border: 1px solid black; */
+    box-shadow: 0 0 5px;
+}
+.sign{
+    width: 100%;
+    border-radius: 5rem;
+}
+.section{
+    width: 100%;
+    background-color: rgb(248, 248, 248);
+    border: 0.05rem solid rgb(185, 185, 185);
+    border-radius: 5px;
+    margin: auto;
+    margin-top: 0.5rem;
+    padding: 5px;
+}

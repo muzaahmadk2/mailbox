@@ -1,0 +1,36 @@
+.container{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-left: 3em;
+    
+}
+.container h2{
+    color: darkturquoise;
+}
+ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+   
+}
+ul li{
+    margin-left: 1em;
+    margin-right: 1em;
+}
+li a{
+    text-decoration: none;
+    color: black;
+    transition: 0.25s ease;
+}
+li:hover{
+    text-decoration: underline;
+
+}
+a:active{
+    text-decoration: underline;
+    transition: 0.25s ease;
+}
+.navbar{
+    box-shadow: 0 0 5px;
+}
