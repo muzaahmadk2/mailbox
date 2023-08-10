@@ -6,7 +6,7 @@
     height: 3rem;
     align-items: center;
     margin-bottom: 1rem;
-
+    margin-left: 3rem;
 }
 
 .card:hover{
@@ -21,9 +21,8 @@
 
 }
 .card{
-    width: 1000px;
-
-
+    width: 900px;
+    /* margin-left: 3rem; */
 }
 .dis{
     color: red;

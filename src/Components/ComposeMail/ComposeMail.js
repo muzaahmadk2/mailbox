@@ -5,14 +5,42 @@ import { useRef, useState, useMemo } from "react";
 import { convertToRaw, EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-// import axios from "axios";
+import { useDispatch } from "react-redux";
+import { inboxAction } from "../Store/inboxSlice";
+import axios from 'axios';
 
 const ComposeMail = (props) => {
+    const dispatch = useDispatch();
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
   const receiverEmailRef = useRef();
   const subjectRef = useRef();
+  const myEmail = localStorage.getItem('email');
+
+  const getData = async () => {
+    let count = 0;
+    const res = await axios.get(
+      `https://mailbox-1d216-default-rtdb.firebaseio.com/${myEmail}.json`
+    );
+
+    let Arr = [];
+    for (const key in res.data) {
+      Arr.push({
+        id: key,
+        subject: res.data[key].sub,
+        body: res.data[key].emailBody,
+        from: res.data[key].from,
+        date: res.data[key].sentAt,
+        read: res.data[key].read,
+      });
+      if(res.data[key].read === false){
+        count += 1;
+      }
+    }
+    console.log(Arr);
+    dispatch(inboxAction.addMails({inbox: Arr, no: count}));
+  };
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -26,6 +54,7 @@ const ComposeMail = (props) => {
       sub: subject,
       emailBody: body,
       sentAt: new Date().toLocaleString(),
+      read: false,
     };
     try {
       const Email = JSON.stringify(email);
@@ -42,11 +71,10 @@ const ComposeMail = (props) => {
     } catch (Error) {
         alert (Error);
     }
-    
-    
+    getData();
 
-    // setEditorState("");
   };
+
   const hideHandler = () => {
     props.hideCompose();
   }
