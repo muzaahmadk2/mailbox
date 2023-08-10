@@ -7,7 +7,7 @@ import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 // import axios from "axios";
 
-const ComposeMail = () => {
+const ComposeMail = (props) => {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
@@ -25,11 +25,12 @@ const ComposeMail = () => {
       to: receiverEmail,
       sub: subject,
       emailBody: body,
+      sentAt: new Date().toLocaleString(),
     };
     try {
       const Email = JSON.stringify(email);
       const res = await fetch(
-        `https://mailbox-1d216-default-rtdb.firebaseio.com/sendMails/${receiverValidEmail}.json`,
+        `https://mailbox-1d216-default-rtdb.firebaseio.com/${receiverValidEmail}.json`,
         {
           method: "POST",
           body: Email,
@@ -46,6 +47,9 @@ const ComposeMail = () => {
 
     // setEditorState("");
   };
+  const hideHandler = () => {
+    props.hideCompose();
+  }
   return (
     <>
       <div className="container">
@@ -55,6 +59,7 @@ const ComposeMail = () => {
               type="button"
               className="btn-close "
               aria-label="Close"
+              onClick={hideHandler}
             ></button>
           </div>
           <Form.Group className="mt-4 mb-2">

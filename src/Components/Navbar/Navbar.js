@@ -5,6 +5,7 @@ import { Route, Routes,  } from "react-router-dom";
 import Welcome from "../Welcome/Welcome";
 import { useSelector,useDispatch } from "react-redux";
 import { authAction } from "../Store/authSlice";
+import InboxMail from "../Inbox/InboxMail";
 
 
 const NavBar = () =>{
@@ -40,6 +41,7 @@ return(
         <Routes>
             {isLoggedIn && <Route path="/" element={<Welcome />} />}
             {isLoggedIn && <Route path="/home" element={<Welcome/>} />}
+            <Route path="/home/:mailid" element={<InboxMail />} />
         </Routes>
     </Fragment>
 )
