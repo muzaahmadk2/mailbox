@@ -27,6 +27,14 @@ li:hover{
     text-decoration: underline;
 
 }
+li button{
+    border: none;
+    background: transparent;
+}
+li button:hover{
+    box-shadow: 0 0 5px;
+    transition: 0.25s ease;
+}
 a:active{
     text-decoration: underline;
     transition: 0.25s ease;

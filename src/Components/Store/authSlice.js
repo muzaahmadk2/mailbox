@@ -11,6 +11,12 @@ const authSlice = createSlice({
             localStorage.setItem('token',action.payload.token);
             localStorage.setItem('email',action.payload.email.replace(/[@.]/g, ""));
         },
+        logout(state){
+            state.isLoggedIn = false;
+            state.token = '';
+            localStorage.removeItem('token');
+            localStorage.removeItem('email');
+        },
     }
 })
 
