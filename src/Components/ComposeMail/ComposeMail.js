@@ -42,6 +42,24 @@ const ComposeMail = (props) => {
     console.log(Arr);
     dispatch(inboxAction.addMails({inbox: Arr, no: count}));
   };
+  const getSentData = async () => {
+    const res = await axios.get(`https://mailbox-1d216-default-rtdb.firebaseio.com/sentbox/${myEmail}.json`);
+    let Arr = [];
+    for(const key in res.data){
+      Arr.push({
+        id: key,
+        subject: res.data[key].sub,
+        body: res.data[key].emailBody,
+        from: res.data[key].from,
+        date: res.data[key].sentAt,
+        read: res.data[key].read,
+        to: res.data[key].to,
+      });
+        
+    }
+    console.log(Arr)
+    dispatch(inboxAction.addSentMails(Arr));
+  }
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -59,6 +77,11 @@ const ComposeMail = (props) => {
     };
     try {
       const Email = JSON.stringify(email);
+      await axios.post(
+        `https://mailbox-1d216-default-rtdb.firebaseio.com/sentbox/${myEmail}.json`,
+        Email
+      );
+
       const res = await fetch(
         `https://mailbox-1d216-default-rtdb.firebaseio.com/${receiverValidEmail}.json`,
         {
@@ -77,7 +100,7 @@ const ComposeMail = (props) => {
     subjectRef.current.value = '';
     setEditorState(null);
     getData();
-
+    getSentData();
   };
 
   const hideHandler = () => {

@@ -6,6 +6,7 @@ import Welcome from "../Welcome/Welcome";
 import { useSelector,useDispatch } from "react-redux";
 import { authAction } from "../Store/authSlice";
 import InboxMail from "../Inbox/InboxMail";
+import SentboxMail from "../Inbox/SentboxMail";
 
 
 const NavBar = () =>{
@@ -22,7 +23,7 @@ return(
             <Nav>
                 <ul>
                     <li>
-                        <a href="#">Home</a>
+                        <a href="/home">Home</a>
                     </li>
                     <li>
                         <a href="#">Products</a>
@@ -42,6 +43,7 @@ return(
             {isLoggedIn && <Route path="/" element={<Welcome />} />}
             {isLoggedIn && <Route path="/home" element={<Welcome/>} />}
             <Route path="/home/:mailid" element={<InboxMail />} />
+            <Route path="/home/sentmail/:mailid" element={<SentboxMail />} />
         </Routes>
     </Fragment>
 )

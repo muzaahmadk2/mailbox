@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const inboxSlice = createSlice({
   name: "inbox",
-  initialState: { inboxArr: [], noOfUnreadMessages: 0 },
+  initialState: { inboxArr: [], sentArr: [], noOfUnreadMessages: 0 },
   reducers: {
     addMails(state, action) {
       state.inboxArr = action.payload.inbox;
@@ -10,6 +10,9 @@ const inboxSlice = createSlice({
     },
     messageRead(state){
       state.noOfUnreadMessages -= 1;
+    },
+    addSentMails(state, action){
+      state.sentArr = action.payload;
     }
   },
 });
