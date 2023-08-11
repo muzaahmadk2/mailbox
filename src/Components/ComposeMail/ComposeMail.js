@@ -1,6 +1,7 @@
 import React from "react";
 import "./ComposeMail.css";
 import { Form, Button, Card } from "react-bootstrap";
+import Alert from 'react-bootstrap/Alert';
 import { useRef, useState, useMemo } from "react";
 import { convertToRaw, EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
@@ -67,10 +68,14 @@ const ComposeMail = (props) => {
             "Content-Type": "application/json",
           },
         }
-      );
+      ); 
     } catch (Error) {
         alert (Error);
     }
+    alert("E-mail sent successfully!!");
+    receiverEmailRef.current.value= '';
+    subjectRef.current.value = '';
+    setEditorState(null);
     getData();
 
   };

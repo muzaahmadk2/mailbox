@@ -63,14 +63,14 @@ function Welcome() {
               Compose Mail
             </Button>
             <Button variant="danger" onClick={showInboxHandler}>
-              Inbox<Badge className="py-2 mx-1" >{noOfUnreadMessages}</Badge>
+              Inbox<Badge className="py-2 mx-1" bg="secondary" >{noOfUnreadMessages}</Badge>
             </Button>
             <Button variant="success">Sent Items</Button>
           </div>
         </div>
         <div className="content">
           {showCompose && <ComposeMail hideCompose={hideComposeHandler} />}
-          {showInbox && <Inbox />}
+          {showInbox && <Inbox getData={getData} />}
         </div>
       </Container>
     </div>

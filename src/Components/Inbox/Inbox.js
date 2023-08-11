@@ -8,7 +8,15 @@ import { Accordion, Form } from "react-bootstrap";
 
 function Inbox(props) {
   const inboxArr = useSelector((state) => state.inbox.inboxArr);
-  console.log(inboxArr);
+  const myEmail = localStorage.getItem('email');
+
+  const deleteMail = async(id) => {
+    await axios.delete(
+      `https://mailbox-1d216-default-rtdb.firebaseio.com/${myEmail}/${id}.json`
+    );
+      
+    props.getData();
+  }
 
   let inboxMessages = inboxArr.map((email) => {
     return (
@@ -35,7 +43,9 @@ function Inbox(props) {
             </Card.Body>
           </Link>
         </div>
-        <button type="button" className="btn btn-outline-danger ms-2">
+        <button type="button" className="btn btn-outline-danger ms-2" onClick={() => {
+            deleteMail(email.id);
+          }}>
           X
         </button>
       </div>
