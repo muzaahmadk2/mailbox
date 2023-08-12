@@ -59,6 +59,7 @@ function Welcome() {
     console.log(Arr);
     dispatch(inboxAction.addMails({ inbox: Arr, no: count }));
   };
+
   const showComposeHandler = () => {
     setShowCompose(true);
     setShowInbox(false);
@@ -78,6 +79,8 @@ function Welcome() {
     setShowCompose(false);
     setShowInbox(false);
   }
+
+
   useEffect(() => {
     getData();
     getSentData();

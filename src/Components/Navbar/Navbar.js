@@ -23,7 +23,7 @@ return(
             <Nav>
                 <ul>
                     <li>
-                        <a href="/home">Home</a>
+                        <a href={isLoggedIn ? "/home" : "/"}>Home</a>
                     </li>
                     <li>
                         <a href="#">Products</a>
